@@ -1,11 +1,11 @@
 package hu.webuni.airport.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,57 +14,64 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import hu.webuni.airport.dto.AirportDto;
+import hu.webuni.airport.mapper.AirportMapper;
+import hu.webuni.airport.model.Airport;
+import hu.webuni.airport.service.AirportService;
 
 @RestController
 @RequestMapping("/api/airports")
 public class AirportController {
 
-	private Map<Long, AirportDto> airports = new HashMap<>();
+	@Autowired
+	AirportService airportService;
 	
-	{
-		airports.put(1L, new AirportDto(1,"abc","xyz"));
-		airports.put(2L, new AirportDto(2,"abc","xyz"));
-	}
+	@Autowired
+	AirportMapper airportMapper;
+	
 	
 	@GetMapping
 	public List<AirportDto> getAll(){
-		return new ArrayList<>(airports.values());
+		return airportMapper.airportsToDtos(airportService.findAll());
 	}
+	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AirportDto> getById(@PathVariable long id) {
-		AirportDto airportDto = airports.get(id);
+	public AirportDto getById(@PathVariable long id) {
+		Airport airport = airportService.findById(id);
 		
-		if (airportDto != null) 
-			return ResponseEntity.ok(airportDto);	
-		else 
-			return ResponseEntity.notFound().build();
+		if(airport != null)
+			return airportMapper.airportsToDto(airport);
+		else
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	}
+
+	@PostMapping
+	public AirportDto createAirport(@ RequestBody @Valid AirportDto airportDto) {
+		Airport airport = airportService.save(airportMapper.dtoToAirport(airportDto));
+		return airportMapper.airportsToDto(airport);
 	}
 	
-	@PostMapping
-	public AirportDto createAirport(@ RequestBody AirportDto airportDto) {
-		airports.put(airportDto.getId(), airportDto);
-		
-		return airportDto;
-	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<AirportDto> modifyAirprt(@PathVariable long id , @RequestBody AirportDto airportDto) {
-		if(!airports.containsKey(id)) {
-			return ResponseEntity.notFound().build();
-		}
+	public AirportDto modifyAirprt(@PathVariable long id , @RequestBody AirportDto airportDto) {
+		Airport airport = airportService.findById(id);
+		if(null == airport)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		
-		airportDto.setId(id);
-		airports.put(id, airportDto);
+		Airport moderAirport = airportMapper.dtoToAirport(airportDto);
 		
-		return ResponseEntity.ok(airportDto);
+		Airport moddedAirport = airportService.modify(id,moderAirport);
+		
+		return airportMapper.airportsToDto(moddedAirport);
 	}
 	
+
 	@DeleteMapping("/{id}")
 	public void deleteAirport(@PathVariable long id) {
-		airports.remove(id);
+		airportService.delete(id);
 	}
 
 }

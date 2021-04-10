@@ -1,8 +1,8 @@
-package hu.webuni.airport.dto;
+package hu.webuni.airport.model;
 
 import javax.validation.constraints.Size;
 
-public class AirportDto {
+public class Airport {
 	
 	private long id;
 	
@@ -10,9 +10,9 @@ public class AirportDto {
 	private String name;
 	private String iata;
 	
-	public AirportDto() {}
+	public Airport() {}
 	
-	public AirportDto(long id, String name, String iata) {
+	public Airport(long id, String name, String iata) {
 		super();
 		this.id = id;
 		this.name = name;
