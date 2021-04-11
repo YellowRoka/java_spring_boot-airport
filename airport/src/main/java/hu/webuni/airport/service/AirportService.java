@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import hu.webuni.airport.model.Airport;
 
-@Service
+
 public class AirportService {
 
 	
