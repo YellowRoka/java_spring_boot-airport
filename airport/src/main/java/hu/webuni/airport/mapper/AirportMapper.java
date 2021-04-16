@@ -14,7 +14,7 @@ public interface AirportMapper {
 
 	List<AirportDto> airportsToDtos(List<Airport> airports);
 
-	AirportDto airportsToDto(Airport airport);
+	AirportDto airportToDto(Airport airport);
 
 	Airport dtoToAirport(@Valid AirportDto airportDto);
 }

@@ -43,7 +43,7 @@ public class AirportController {
 		Airport airport = airportService.findById(id);
 		
 		if(airport != null)
-			return airportMapper.airportsToDto(airport);
+			return airportMapper.airportToDto(airport);
 		else
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
@@ -51,21 +51,17 @@ public class AirportController {
 	@PostMapping
 	public AirportDto createAirport(@ RequestBody @Valid AirportDto airportDto) {
 		Airport airport = airportService.save(airportMapper.dtoToAirport(airportDto));
-		return airportMapper.airportsToDto(airport);
+		return airportMapper.airportToDto(airport);
 	}
 	
 	
 	@PutMapping("/{id}")
 	public AirportDto modifyAirprt(@PathVariable long id , @RequestBody AirportDto airportDto) {
-		Airport airport = airportService.findById(id);
-		if(null == airport)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		
-		Airport moderAirport = airportMapper.dtoToAirport(airportDto);
-		
-		Airport moddedAirport = airportService.modify(id,moderAirport);
-		
-		return airportMapper.airportsToDto(moddedAirport);
+		Airport airport = airportMapper.dtoToAirport(airportDto);
+		airport.setId(id);
+		AirportDto savedAirportDto = airportMapper.airportToDto(airportService.update(airport));
+
+		return savedAirportDto;
 	}
 	
 
