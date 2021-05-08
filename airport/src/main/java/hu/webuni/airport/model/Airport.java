@@ -22,9 +22,9 @@ public class Airport {
 	
 	public Airport() {}
 	
-	public Airport(long id, String name, String iata) {
+	public Airport(/*long id,*/ String name, String iata) {
 		super();
-		this.id = id;
+		/*this.id = id;*/
 		this.name = name;
 		this.iata = iata;
 	}

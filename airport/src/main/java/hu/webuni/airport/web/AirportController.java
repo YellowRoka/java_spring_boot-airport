@@ -20,7 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.airport.dto.AirportDto;
 import hu.webuni.airport.mapper.AirportMapper;
 import hu.webuni.airport.model.Airport;
+import hu.webuni.airport.model.LogEntry;
+import hu.webuni.airport.repository.LogEntryRepository;
 import hu.webuni.airport.service.AirportService;
+import hu.webuni.airport.service.LogEntryService;
 
 @RestController
 @RequestMapping("/api/airports")
@@ -31,7 +34,6 @@ public class AirportController {
 	
 	@Autowired
 	AirportMapper airportMapper;
-	
 	
 	@GetMapping
 	public List<AirportDto> getAll(){
