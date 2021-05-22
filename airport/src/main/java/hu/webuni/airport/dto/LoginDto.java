@@ -1,25 +1,19 @@
-package hu.webuni.airport.model;
+package hu.webuni.airport.dto;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+public class LoginDto {
 
-@Entity
-public class LogEntry {
-
-	@Id
-	@GeneratedValue
 	private long id;
 	
 	private LocalDateTime ts;
 	private String description;
 	private String username;
+	private String password;
 	
-	public LogEntry() {}
+	public LoginDto() {}
 	
-	public LogEntry(String description, String username) {
+	public LoginDto(String description, String username) {
 		//super();
 		this.description = description;
 		this.username = username;
@@ -44,7 +38,26 @@ public class LogEntry {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 	
 	
 }

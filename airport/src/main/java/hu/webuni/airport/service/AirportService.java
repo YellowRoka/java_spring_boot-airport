@@ -48,7 +48,7 @@ public class AirportService {
 		//return em.merge(airport);
 		if(airportRepository.existsById(airport.getId())) {
 			logEntryService.createLog(String.format("Airport modification with id: %d, new name is: %s", airport.getId(),airport.getName()) );
-			callBackendSystem();
+			//callBackendSystem(); időzítés random elszállásra, log hiba tesztre
 			return airportRepository.save(airport);
 		}
 		else {

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import hu.webuni.airport.model.Airport_;
 import hu.webuni.airport.model.Flight;
 import hu.webuni.airport.model.Flight_;
+
 public class FlightSpecifications {
 
 	public static Specification<Flight> hasId(long id){
@@ -27,4 +28,5 @@ public class FlightSpecifications {
 	public static Specification<Flight> hasTakeOffIATA(String iata) {
 		return(root,cq,cb)->cb.like(root.get(Flight_.takeOff).get(Airport_.iata),iata + "%");
 	}
+	
 }
